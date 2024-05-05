@@ -180,9 +180,6 @@ There is two way to connect to Provisioned VMs:
   mkdir /mnt/disk2/minio
   ```
 
-
-
-
 ## [ Minio Systemd Service][4]
 
 After connecting to each VM, add a minio systemd service in `/etc/systemd/system`
@@ -286,6 +283,14 @@ May 05 19:32:26 minio-04 minio[4199]: WebUI: http://192.168.122.34:9001 http://1
 May 05 19:32:26 minio-04 minio[4199]: Docs: https://min.io/docs/minio/linux/index.html
 May 05 19:32:26 minio-04 minio[4199]: Status:         8 Online, 0 Offline.
 
+```
+
+## Login To Minio (Web UI)
+
+in Browser type the minio UI URL , can be reached with VMs IP and its Port and Login via the Username And Password Provided in `/etc/default/mini` file.
+
+```txt
+192.168.121.31:9000
 ```
 
 ## Resources
