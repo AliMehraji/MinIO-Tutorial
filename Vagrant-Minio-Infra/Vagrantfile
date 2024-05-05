@@ -1,0 +1,64 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu2204"
+  config.ssh.insert_key = false
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  # Copy Minio-Package From Host To VMs
+  config.vm.provision "file", source: "/tmp/minio_20240501011110.0.0_amd64.deb", destination: "/tmp/minio_20240501011110.0.0_amd64.deb"
+  # Step by Step Shell commands to prepare the VMs 
+  # The Vagrant User is in Sudoer Group by default.
+  config.vm.provision "shell", inline: <<-SHELL
+    # Add Your Host SSH Key To VMs to connect them via ssh 
+    echo '<HOST-PUBLIC-SSH-KEY>' >> /home/vagrant/.ssh/authorized_keys
+    # Changing Mod and OwnerShip of authorized key to be readable just for vagrant user
+    chmod 600 /home/vagrant/.ssh/authorized_keys
+    chown vagrant:vagrant /home/vagrant/.ssh/authorized_keys
+    # Adding Proxy Server Address for Apt Because of Filterring If You Need because Of Not Free Internet
+    # If You Have Free Internet , Comment below line
+    echo 'Acquire::http::Proxy "socks5h://<PROXY-SERVER-IP>:<PROXY-SERVER-PORT>";' >> /etc/apt/apt.conf.d/proxy
+    # Update And Upgrade VMs
+    sudo apt update -y && sudo apt upgrade -y
+    # Adding Minio servers IP to /ets/host to implement DNS Server.
+    # The Static IPs which going to be assigned to VMs.
+    sudo echo -en "192.168.122.31 minio-01\n192.168.122.32 minio-02\n192.168.122.33 minio-03\n192.168.122.34 minio-04\n" >> /etc/hosts
+    # Adding User and group for minio
+    sudo useradd -M -r -s /usr/sbin/nologin minio-user
+    # changing TimeZone To Asia/Tehran
+    sudo timedatectl set-timezone Asia/Tehran
+    # Installing Minio Which it's package is downloaded in host and copied to VMs.
+    sudo dpkg -i /tmp/minio_20240501011110.0.0_amd64.deb
+    # Creating Directory For Mounting disks in vms from their /etc/fstab after provisioning the VMs.
+    sudo mkdir /mnt/disk{1..2}
+  SHELL
+
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.memory = 2048
+    libvirt.cpus = 2  # Set the number of CPUs
+    libvirt.storage :file, :size => '2G', :type => 'qcow2' # Additional Disk
+    libvirt.storage :file, :size => '2G', :type => 'qcow2'
+    # v.cpusize = 1024  # Set the CPU execution cap (in percentage)
+  end
+
+  # Minio Server 1
+  config.vm.define "Minio-Server-1" do |app1|
+    app1.vm.hostname = "minio-01"
+    app1.vm.network :private_network, type: "static", ip: "192.168.122.31", bridge: "virbr0"
+  end
+
+  # Minio Server 2
+  config.vm.define "Minio-Server-2" do |app2|
+    app2.vm.hostname = "minio-02"
+    app2.vm.network :private_network, type: "static", ip: "192.168.122.32", bridge: "virbr0"
+  end
+
+  # Minio Server 3
+  config.vm.define "Minio-Server-3" do |app3|
+    app3.vm.hostname = "minio-03"
+    app3.vm.network :private_network, type: "static", ip: "192.168.122.33", bridge: "virbr0"
+  end
+
+  # Minio Server 4
+  config.vm.define "Minio-Server-4" do |app4|
+    app4.vm.hostname = "minio-04"
+    app4.vm.network :private_network, type: "static", ip: "192.168.122.34", bridge: "virbr0"
+  end
+end
