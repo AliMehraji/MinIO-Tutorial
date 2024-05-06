@@ -115,8 +115,9 @@ end
 
 There is two way to connect to Provisioned VMs:
 
-1 - `ssh vagrant@VM-IP`</br></br>
+1 - `ssh vagrant@VM-IP`
   > The Host public ssh key has to be added to VMs via Vagrantfile.
+  
   example:
 
   ```bash
