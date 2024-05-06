@@ -117,7 +117,7 @@ There is two way to connect to Provisioned VMs:
 
 1 - `ssh vagrant@VM-IP`
   > The Host public ssh key has to be added to VMs via Vagrantfile.
-  
+
   example:
 
   ```bash
@@ -176,7 +176,7 @@ There is two way to connect to Provisioned VMs:
 - Change Ownership of those Directories to `minio-user`
   
   ```bash
-  chown minio-user:minio-user /mnt/disk1/minio
+  chown minio-user:minio-user /mnt/disk1/minio /mnt/disk2/minio
   ```
 
 - Create `minio` Directory in `/mnt/disk1` and `/mnt/disk2`.
