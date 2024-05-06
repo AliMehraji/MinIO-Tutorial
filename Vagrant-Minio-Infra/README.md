@@ -173,17 +173,17 @@ There is two way to connect to Provisioned VMs:
   mount -av
   ```
 
-- Change Ownership of those Directories to `minio-user`
-  
-  ```bash
-  chown minio-user:minio-user /mnt/disk1/minio /mnt/disk2/minio
-  ```
-
 - Create `minio` Directory in `/mnt/disk1` and `/mnt/disk2`.
   
   ```bash
   mkdir /mnt/disk1/minio
   mkdir /mnt/disk2/minio
+  ```
+
+- Change Ownership of those Directories to `minio-user`
+  
+  ```bash
+  chown minio-user:minio-user /mnt/disk1/minio /mnt/disk2/minio
   ```
 
 ## [ Minio Systemd Service][2]
