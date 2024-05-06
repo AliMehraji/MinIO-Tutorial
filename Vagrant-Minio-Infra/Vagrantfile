@@ -1,9 +1,13 @@
+# Latest Version Of Minio Is Present in Host
+MINIO_DEB_LATEST_VERSION="minio_20240501011110.0.0_amd64.deb"
+
 Vagrant.configure("2") do |config|
   config.vm.box = "generic/ubuntu2204"
   config.ssh.insert_key = false
   config.vm.synced_folder ".", "/vagrant", disabled: true
   # Copy Minio-Package From Host To VMs
-  config.vm.provision "file", source: "/tmp/minio_20240501011110.0.0_amd64.deb", destination: "/tmp/minio_20240501011110.0.0_amd64.deb"
+  minio_deb_package_path = "/tmp/#{MINIO_DEB_LATEST_VERSION}"
+  config.vm.provision "file", source: minio_deb_package_path , destination: minio_deb_package_path 
   # Step by Step Shell commands to prepare the VMs 
   # The Vagrant User is in Sudoer Group by default.
   config.vm.provision "shell", inline: <<-SHELL
@@ -25,7 +29,7 @@ Vagrant.configure("2") do |config|
     # changing TimeZone To Asia/Tehran
     sudo timedatectl set-timezone Asia/Tehran
     # Installing Minio Which it's package is downloaded in host and copied to VMs.
-    sudo dpkg -i /tmp/minio_20240501011110.0.0_amd64.deb
+    sudo dpkg -i #{minio_deb_package_path }
     # Creating Directory For Mounting disks in vms from their /etc/fstab after provisioning the VMs.
     sudo mkdir /mnt/disk{1..2}
   SHELL

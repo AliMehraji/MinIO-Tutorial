@@ -10,7 +10,7 @@ Download `mino` package in Host, It will be copied to Vagrant VMs.
   curl  -L https://dl.min.io/server/minio/release/linux-amd64/minio_20240501011110.0.0_amd64.deb -o /tmp/minio_20240501011110.0.0_amd64.deb
 ```
 
-  > For the latest version check the Minio Download page for Linux [Minio-Download-Page][2]
+  > For the latest version check the Minio Download page for Linux [Minio-Download-Page][1]
   >
   > If You can't download , set proxy for `curl` `--proxy "socks5h://<PROXY-SERVER-IP>:<PROXY-SERVER-PORT>"`
   >
@@ -24,7 +24,7 @@ example :
 
 Vagrant VMs IPs :
 
-> It Depends On Host Virtualization `qemu/kvm` IP Ranges by default or it could be changed.
+> It Depends On Host Virtualization `qemu/kvm` IP Range. it could be changed.
 > 
 > To find the ip range (by default the link name is `virbr0`) , invoke `ip addr show virbr0`.
 
@@ -180,7 +180,7 @@ There is two way to connect to Provisioned VMs:
   mkdir /mnt/disk2/minio
   ```
 
-## [ Minio Systemd Service][4]
+## [ Minio Systemd Service][2]
 
 After connecting to each VM, add a minio systemd service in `/etc/systemd/system`
 
@@ -295,13 +295,13 @@ in Browser type the minio UI URL , can be reached with VMs IP and its Port and L
 
 ## Resources
 
-- [`qemu/kvm` installation][2]
-- [Vagrant Installation][3]
+- [`qemu/kvm` installation][3]
+- [Vagrant Installation][4]
 - [VagrantBoxes][5]
 
 
 [1]: https://min.io/download?license=agpl&platform=linux#/linux
-[2]: https://docs.fedoraproject.org/en-US/quick-docs/virtualization-getting-started
-[3]: https://developer.hashicorp.com/vagrant/install
-[4]: https://github.com/minio/minio-service/blob/master/linux-systemd/minio.service
+[2]: https://github.com/minio/minio-service/blob/master/linux-systemd/minio.service
+[3]: https://docs.fedoraproject.org/en-US/quick-docs/virtualization-getting-started
+[4]: https://developer.hashicorp.com/vagrant/install
 [5]: https://app.vagrantup.com/boxes/search
